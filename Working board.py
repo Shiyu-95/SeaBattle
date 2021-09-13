@@ -132,8 +132,8 @@ class Board:   # класс доски
 
 class Player:
     def __init__(self, board, enemy):
-        self.board = board
-        self.enemy = enemy
+        self.board = board  # наша доска
+        self.enemy = enemy  # доска ИИ
 
     def ask(self):
         raise NotImplementedError()
@@ -141,8 +141,8 @@ class Player:
     def move(self):
         while True:
             try:
-                target = self.ask()
-                repeat = self.enemy.shot(target)
+                target = self.ask()   # спрашиваем точку куда стрелять
+                repeat = self.enemy.shot(target)    # shot отвечает за то нужно ли делать повторный ход
                 return repeat
             except GameBoardException as e:
                 print(e)
@@ -150,7 +150,7 @@ class Player:
 
 class AI(Player):
     def ask(self):
-        d = Dot(randint(0, 5), randint(0, 5))
+        d = Dot(randint(0, 5), randint(0, 5))    # делает рандомный выстрел
         print(f"AI turn: {d.x + 1} {d.y + 1}")
         return d
 
@@ -174,8 +174,8 @@ class Game:
     def __init__(self, size=7):
         self.lens = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
         self.size = size
-        pl = self.random_board()
-        co = self.random_board()
+        pl = self.random_board()   # доска игрока
+        co = self.random_board()   # доска ИИ
         co.hid = True
         self.ai = AI(co, pl)
         self.us = User(pl, co)
@@ -198,7 +198,7 @@ class Game:
         board.begin()
         return board
 
-    def random_board(self):
+    def random_board(self):  # делается расстановка, если не получется, то становится none и пробует еще раз
         board = None
         while board is None:
             board = self.make_board()
